@@ -43,15 +43,16 @@ export const companiesController = {
         const { id } = req.params
         const { name, bio, website, email} = req.body
         try {
-            const company = await Company.findByPk(id)
-            if (company == null) {
-                return res.status(404).json({message: "didn't find this company."})
-            }
-            company.name = name
-            company.bio = bio
-            company.website = website
-            company.email = email
-            await company.save()
+            const company = await Company.update({
+                name,
+                bio,
+                website,
+                email
+            },{
+                where: { id },
+                returning: true
+            })
+           res.status(200).json(company)
         } catch (err) {
             if (err instanceof Error) {
                 res.status(400).json({ message: err.message})
