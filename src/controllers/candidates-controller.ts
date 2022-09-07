@@ -48,18 +48,16 @@ export const candidatesController = {
     const { id } = req.params;
     const { name, email, bio, phone, openToWork } = req.body;
     try {
-      const candidate = await Candidate.findByPk(id);
-      if (candidate == null) {
-        return res.status(404).json({ message: "didn't find this candidate." });
-      }
-      candidate.name = name;
-      candidate.email = email;
-      candidate.bio = bio;
-      candidate.phone = phone;
-      candidate.openToWork = openToWork;
-
-      await candidate.save();
-
+      const candidate = await Candidate.update({
+        name,
+        email,
+        bio,
+        phone,
+        openToWork
+      },{
+        where: {id},
+        returning: true
+      })
       return res.status(200).json(candidate);
     } catch (err) {
       if (err instanceof Error) {
