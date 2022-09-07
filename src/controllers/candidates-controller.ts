@@ -48,7 +48,7 @@ export const candidatesController = {
     const { id } = req.params;
     const { name, email, bio, phone, openToWork } = req.body;
     try {
-      const candidate = await Candidate.update({
+      const [affectedRows, candidates] = await Candidate.update({
         name,
         email,
         bio,
@@ -58,7 +58,7 @@ export const candidatesController = {
         where: {id},
         returning: true
       })
-      return res.status(200).json(candidate);
+      return res.status(200).json(candidates[0]);
     } catch (err) {
       if (err instanceof Error) {
         res.status(400).json({ message: err.message });

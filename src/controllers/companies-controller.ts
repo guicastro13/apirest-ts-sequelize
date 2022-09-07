@@ -43,7 +43,7 @@ export const companiesController = {
         const { id } = req.params
         const { name, bio, website, email} = req.body
         try {
-            const company = await Company.update({
+            const [affectedRows, companies] = await Company.update({
                 name,
                 bio,
                 website,
@@ -52,7 +52,8 @@ export const companiesController = {
                 where: { id },
                 returning: true
             })
-           res.status(200).json(company)
+
+           res.status(200).json(companies[0])
         } catch (err) {
             if (err instanceof Error) {
                 res.status(400).json({ message: err.message})
