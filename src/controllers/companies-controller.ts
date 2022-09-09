@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Company } from "../models/company";
+import { Company } from "../models";
 
 export const companiesController = {
     index : async (req: Request, res: Response) => {
